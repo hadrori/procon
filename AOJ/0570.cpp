@@ -2,13 +2,13 @@
 using namespace std;
 #define repi(i,a,b) for(int i=(int)(a);i<(int)(b);i++)
 #define rep(i,n) repi(i,0,n)
-  
+ 
 const int mod = 10000;
 inline void add(int &x, int y) { (x+=y)%=mod; }
-  
+ 
 string A, B;
 int N, M, dp[2][512][10][3][2][2][2]; // dp[pos][mod m][val][down, up, first][on A][on B][leading 0]
-  
+ 
 int solve() {
     N = B.size();
     A = string(N-A.size(), '0')+A;
@@ -34,11 +34,11 @@ int solve() {
     rep(i,10) rep(j,3) rep(k,2) rep(l,2) add(ans, dp[0][0][i][j][k][l][0]);
     return ans;
 }
-  
+ 
 void input() {
     cin >> A >> B >> M;
 }
-  
+ 
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(0);

@@ -1,49 +1,52 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <complex>
-#include <cstring>
-#include <cstdio>
-#include <iostream>
-#include <vector>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-
-#define repi(i,a,b) for(int i = (a); i < (b); i++)
-#define rep(i,a) repi(i,0,a)
-#define repd(i,a,b) for(int i = (a); i >= (b); i--)
-#define repit(i,a) for(__typeof((a).begin()) i = (a).begin(); i != (a).end(); i++)
-#define all(u) (u).begin(),(u).end()
-#define rall(u) (u).rbegin(),(u).rend()
-#define UNIQUE(u) (u).erase(unique(all(u)),(u).end())
-#define pb push_back
-#define mp make_pair
-#define fst first
-#define snd second
-#define INF 1e9
-#define EPS 1e-10
-#define PI acos(-1.0)
-
+#include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-typedef vector<int> vi;
-typedef pair<int,int> pii;
-typedef complex<double> P;
-typedef vector<P> G;
+struct segtree  // RMQ
+{
+        int N;
+        vector<long long> dat;
+        segtree(int n) {
+                N = 1;
+                while(N < n) N *= 2;
+                dat.assign(2*N, 0);
+        }
+        // update k th element
+        void update(int k, long long a) {
+                k += N-1; // leaf
+                dat[k] = a;
+                while(k > 0){
+                        k = (k - 1) / 2;
+                        dat[k] = max(dat[k*2+1], dat[k*2+2]);
+                }
+        }
+        // min [a, b)
+        long long query(int a, int b){ return query(a, b, 0, 0, N);}
+        long long query(int a, int b, int k, int l, int r) {
+                if(r <= a or b <= l) return 0;
+                if(a <= l and r <= b) return dat[k];
+                int m = (l + r) / 2;
+                return max(query(a, b, k*2+1, l, m), query(a, b, k*2+2, m, r));
+        }
+};
 
-int n;
-int x[100010];
-int main(){
-    cin >> n;
-    int sum = 0;
-    rep(i,n){
-        cin >> x[i];
-        sum  += x[i];
-    }
-    return 0;
+long long n, x[100010];
+
+long long solve()
+{
+        segtree st(n+1);
+        for (int i = 0; i < n; i++) st.update(x[i], st.query(0,x[i])+x[i]);
+        return 1LL*n*(n+1)/2-st.query(0,n+1);
+}
+
+void input()
+{
+        scanf("%lld", &n);
+        for (int i = 0; i < n; i++) scanf("%lld", x+i);
+}
+
+int main()
+{
+        input();
+        printf("%lld\n", solve());
+        return 0;
 }

@@ -2,12 +2,12 @@
 using namespace std;
 #define repi(i,a,b) for(int i = (int)(a); i < (int)(b); i++)
 #define rep(i,n) repi(i,0,n)
- 
+
 template<class T> class bit {
 public:
     vector<T> dat;
     int N;
-     
+    
     bit(){}
     bit(int N) : N(N) { dat.assign(N,0); }
     // sum [0,i)
@@ -21,13 +21,13 @@ public:
     // add x to i
     void add(int i, T x) { for(; i < N; i|=i+1) dat[i] += x; }
 };
- 
- 
+
+
 bit<int> bs;
 map<int,int> id;
 int q, lim, l, r, vs[400010];
 bool done[400010];
- 
+
 int get_pos(int p) {
     int lb = l, ub = r, mid;
     while(ub-lb > 1) {
@@ -37,7 +37,7 @@ int get_pos(int p) {
     }
     return lb;
 }
- 
+
 void normalize() {
     if(bs.sum(r) > lim) {
         while(done[l]) l++;
@@ -45,7 +45,7 @@ void normalize() {
         bs.add(l++,-1);
     }
 }
- 
+
 void solve() {
     memset(done,0,sizeof(done));
     id.clear();
@@ -73,12 +73,12 @@ void solve() {
         normalize();
     }
 }
- 
+
 bool input() {
     cin >> q >> lim;
     return q or lim;
 }
- 
+
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(0);

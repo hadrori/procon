@@ -2,10 +2,10 @@
 using namespace std;
 #define repi(i,a,b) for(int i = (int)(a); i < (int)(b); i++)
 #define rep(i,n) repi(i,0,n)
- 
+
 string s;
 int dp[2048][2048], to[2048][2048];
- 
+
 int rec(int l, int r) {
     int &ret = dp[l][r];
     if(~ret) return ret;
@@ -23,7 +23,7 @@ int rec(int l, int r) {
     to[l][r] = 2;
     return ret = b;
 }
- 
+
 string solve() {
     memset(dp,-1,sizeof(dp));
     int l = 0, r = s.size()-1, nl, nr;
@@ -41,7 +41,7 @@ string solve() {
     reverse(begin(y),end(y));
     return x+y;
 }
- 
+
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(0);

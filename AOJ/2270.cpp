@@ -7,7 +7,7 @@ template<int N> class FID {
     static const int bucket = 512, block = 16;
     static char popcount[];
     int n, B[N/bucket+1];
-    unsigned short bs[N/block+1], b[N/block+1];
+    signed short bs[N/block+1], b[N/block+1];
 
 public:
     FID(){}

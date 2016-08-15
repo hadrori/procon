@@ -2,23 +2,23 @@
 using namespace std;
 #define repi(i,a,b) for(int i=(int)(a);i<(int)(b);i++)
 #define rep(i,n) repi(i,0,n)
- 
+
 const int inf = 1e9;
- 
+
 struct max_flow {
     struct edge { int to, cap, rev; };
     int V;
     vector<vector<edge>> G;
     vector<int> itr, level;
- 
+
     max_flow() {}
     max_flow(int V) : V(V) { G.assign(V,vector<edge>());}
- 
+
     void add_edge(int from, int to, int cap) {
         G[from].push_back((edge) {to, cap, (int) G[to].size()});
         G[to].push_back((edge) {from, cap, (int) G[from].size()-1});
     }
- 
+
     void bfs(int s) {
         level.assign(V,-1);
         queue<int> q;
@@ -33,7 +33,7 @@ struct max_flow {
             }
         }
     }
- 
+
     int dfs(int v, int t, int f) {
         if (v == t) return f;
         for (int& i = itr[v]; i < (int) G[v].size(); ++i) {
@@ -49,7 +49,7 @@ struct max_flow {
         }
         return 0;
     }
- 
+
     int run(int s, int t, int lim = inf) {
         int ret = 0, f;
         while (bfs(s), level[t] >= 0 and lim) {
@@ -61,19 +61,19 @@ struct max_flow {
         }
         return ret;
     }
- 
+
     void cancel(int s, int t) {
         bfs(s);
         itr.assign(V,0);
         if(level[t] >= 0) dfs(s,t,1);
     }
 };
- 
- 
+
+
 int n, m, q, ex[512][512];
 vector<tuple<int,int,int>> qs;
 max_flow mf;
- 
+
 void solve() {
     int f = mf.run(0,n-1), a, u, v;
     for(auto &q: qs) {
@@ -111,7 +111,7 @@ void solve() {
         cout << f << endl;
     }
 }
- 
+
 void input() {
     cin >> n >> m >> q;
     mf = max_flow(n);
@@ -132,7 +132,7 @@ void input() {
         }
     }
 }
- 
+
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(0);

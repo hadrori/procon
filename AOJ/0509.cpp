@@ -20,7 +20,7 @@ void solve()
         rep(j,w+1) {
             if(f[1][j]) area++;
             if((f[0][j] > 0) != (f[1][j] > 0)) length++;
-            if((f[1][j] > 0) != (f[1][j+1] > 0)) length++;      
+            if((f[1][j] > 0) != (f[1][j+1] > 0)) length++;
         }
         swap(f[0], f[1]);
     }

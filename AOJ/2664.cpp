@@ -2,18 +2,18 @@
 using namespace std;
 #define repi(i,a,b) for(int i=(int)(a);i<(int)(b);i++)
 #define rep(i,n) repi(i,0,n)
- 
+
 struct union_find
 {
     vector<int> rnk, par;
- 
+
     union_find() {}
     union_find(int n){
         rnk.assign(n,1);
         par.assign(n,0);
         for(int i = 0; i < n; i++) par[i] = i;
     }        
-     
+    
     int find(int x) {
         if(x == par[x]) return x;
         else return par[x] = find(par[x]);
@@ -32,18 +32,18 @@ struct union_find
         return x == y;
     }
 };
- 
+
 int n, m, x[5010];
 union_find uf;
 map<string, int> id;
- 
+
 int solve() {
     rep(i,n) x[uf.find(i)] = min(x[uf.find(i)], x[i]);
     int ans = 0;
     rep(i,n) ans += x[uf.find(i)];
     return ans;
 }
- 
+
 void input() {
     cin >> n;
     string a, b; int y;
@@ -58,7 +58,7 @@ void input() {
         uf.unite(id[a],id[b]);
     }
 }
- 
+
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(0);

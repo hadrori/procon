@@ -2,10 +2,10 @@
 using namespace std;
 #define repi(i,a,b) for(int i=(int)(a);i<(int)(b);i++)
 #define rep(i,n) repi(i,0,n)
- 
+
 int n, m, e, s, t, r;
 int f[128][128], ev[128], dist[128][128][4];
- 
+
 int solve() {
     memset(dist,-1,sizeof(dist));
     queue<tuple<int,int,int,int>> q;
@@ -25,7 +25,7 @@ int solve() {
     }
     return -1;
 }
- 
+
 void input() {
     memset(ev,-1,sizeof(ev));
     memset(f,-1,sizeof(f));
@@ -41,7 +41,7 @@ void input() {
         f[a][b] = f[b][a] = ((1<<e)-1)-(1<<i);
     }
 }
- 
+
 int main() {
     cin.tie(0);
     ios_base::sync_with_stdio(0);

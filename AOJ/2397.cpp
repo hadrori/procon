@@ -2,13 +2,13 @@
 using namespace std;
 #define repi(i,a,b) for(int i = (int)(a); i < (int)(b); i++)
 #define rep(i,n) repi(i,0,n)
- 
+
 const long long mod = 1000000009;
- 
+
 typedef long long number;
 typedef vector<number> arr;
 typedef vector<arr> mat;
- 
+
 arr mul(const mat &A, const arr &x) {
     arr y(A.size());
     for(int i = 0; i < (int)A.size(); ++i)
@@ -16,7 +16,7 @@ arr mul(const mat &A, const arr &x) {
             (y[i] += 1LL * A[i][j] * x[j]) %= mod;
     return y;
 }
- 
+
 mat mul(const mat &A, const mat &B) {
     mat C(A.size(), arr(B[0].size()));
     for(int i = 0; i < (int)C.size(); ++i)
@@ -25,23 +25,23 @@ mat mul(const mat &A, const mat &B) {
                 (C[i][j] += 1LL * A[i][k] * B[k][j] % mod) %= mod;
     return C;
 }
- 
+
 mat identity(int n) {
     mat A(n, arr(n));
     for (int i = 0; i < n; i++)
         A[i][i] = 1;
     return A;
 }
- 
+
 mat pow(const mat &A, long long e) {
     return e == 0 ? identity(A.size())  :
         e % 2 == 0 ? pow(mul(A, A), e/2) :
         mul(A, pow(A, e-1));
 }
- 
+
 long long w, h, n;
 map<long long, vector<int>> vs;
- 
+
 long long solve() {
     h--;
     arr as(w,0);
@@ -60,7 +60,7 @@ long long solve() {
     as = mul(pow(A,h-ch),as);
     return as[w-1];
 }
- 
+
 bool input() {
     cin >> w >> h >> n;
     vs.clear();
@@ -71,7 +71,7 @@ bool input() {
     }
     return w or h or n;
 }
- 
+
 int main() {
     for(int i = 1; input(); i++) cout << "Case " << i << ": " << solve() << endl;
     return 0;
