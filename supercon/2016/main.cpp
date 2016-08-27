@@ -10,10 +10,7 @@
 
 using namespace std;
 
-void input_arr(int *arr, int n) {
-    arr = (int *)malloc(sizeof(int)*n);
-    rep(i,n) scanf("%d", arr+i);
-}
+void input_arr(int *arr, int n) { rep(i,n) scanf("%d", arr+i); }
 int input_int() { int n; scanf("%d", &n); return n; }
 
 int color(int k, int *col) { return k < col[0] ? 0 : k < col[1] ? 1 : 2; }
@@ -31,17 +28,17 @@ void output(int *G, int n) {
 
 void solve() {
     int n = input_int(), d = input_int(), c = input_int();
-    int *A, *to, *col, *dist;
-    A    = (int *)malloc(sizeof(int)*n*n);
+    int *G, *to, *col, *dist;
+    G    = (int *)malloc(sizeof(int)*n*n);
     to   = (int *)malloc(sizeof(int)*n*d);
     col  = (int *)malloc(sizeof(int)*c);
     dist = (int *)malloc(sizeof(int)*c*c);
     input_arr(col, c); input_arr(dist, c*c);
     rep(i,c-1) col[i+1] += col[i];
 
-    gen_graph(A, to, col, dist, n, d, c);
-    annealing::run(A, to, col, dist, n, d, c);
-    output(A, n);
+    gen_graph(G, to, col, dist, n, d, c);
+    annealing::run(G, to, col, dist, n, d, c);
+    output(G, n);
 }
 
 int main() {

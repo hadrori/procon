@@ -15,22 +15,29 @@ int connected(int *to, int n, int d) {
     return 1;
 }
 
-void modify(int *G, int *to, int *col, int *dist, int n, int d, int c, int v[4]) {
-    v[0] = rand()%n;
-    v[1] = to[v[0]*d+rand()%d];
+int invalid(int *G, int *v, int n, int d) {
+    return
+        v[0] == v[1] ||
+        v[0] == v[2] ||
+        v[0] == v[3] ||
+        v[1] == v[2] ||
+        v[1] == v[3] ||
+        v[2] == v[3] ||
+        G[v[0]*n+v[3]] != INF ||
+        G[v[1]*n+v[2]] != INF;
+}
+
+void modify(int *G, int *to, int *col, int *dist, int n, int d, int c, int *v) {
     do {
-        v[2] = rand()%n;
-        v[3] = to[v[2]*d+rand()%d];
-        rep(i,4) std::cerr << v[i] << ' ';
-        std::cerr << std::endl;
-        rep(i,n) { rep(j,n) std::cerr << G[i*n+j] << ' '; std::cerr << std::endl; }
-    } while(G[v[0]*d+v[3]] < INF || G[v[1]*d+v[2]] < INF || !connected(to, n, d));
+        v[0] = rand()%n; v[1] = to[v[0]*d+rand()%d];
+        v[2] = rand()%n; v[3] = to[v[2]*d+rand()%d];
+    } while(invalid(G, v, n, d));
     rep(k,4) rep(i,d) if(to[v[k]*d+i] == v[k^1]) to[v[k]*d+i] = v[3-k];
     rep(i,4) G[v[i]*n+v[i^1]] = INF;
     rep(i,4) G[v[i]*n+v[3-i]] = dist[color(v[i],col)*c+color(v[3-i],col)];
 }
 
-void revert(int *G, int *to, int *col, int *dist, int n, int d, int c, int v[4]) {
+void revert(int *G, int *to, int *col, int *dist, int n, int d, int c, int *v) {
     rep(k,4) rep(i,d) if(to[v[k]*d+i] == v[3-k]) to[v[k]*d+i] = v[k^1];
     rep(i,4) G[v[i]*n+v[3-i]] = INF;
     rep(i,4) G[v[i]*n+v[i^1]] = dist[color(v[i],col)*c+color(v[i^1],col)];
@@ -49,20 +56,40 @@ int eval(int *G, int n) {
     return sum;
 }
 
+int valid(int *G, int n, int d) {
+    rep(i,n) {
+        int c = 0;
+        rep(j,n) if(G[i*n+j] < INF) c++;
+        if(c != d+1) return 0;
+    }
+    rep(i,n) repi(j,i+1,n) if(G[i*n+j] != G[j*n+i]) return 0;
+    return 1;
+}
+
 void run(int *G, int *to, int *col, int *dist, int n, int d, int c) {
-    double temp = 10000, cooler = 0.99;
-    int aspl = eval(G, n), v[4];
+    double temp = 10000, cooler = 0.999;
+    int aspl = eval(G, n), *v;
+    v = (int *)malloc(sizeof(int)*4);
     while(temp > 0.001) {
         modify(G, to, col, dist, n, d, c, v);
         int res = eval(G, n);
-        if(res < aspl) aspl = res;
+        if(res < aspl) {
+            aspl = res;
+            printf("ASPL : %d\n", aspl);
+        }
         else {
             double p = exp((aspl-res)/temp);
             if(rand()*1.0/RAND_MAX < p) aspl = res;
             else revert(G, to, col, dist, n, d, c, v);
         }
         temp *= cooler;
-        std::cerr << temp << std::endl;
+    }
+    rep(i,n) {
+        rep(j,n) {
+            if(G[i*n+j] < INF) printf("%d ", G[i*n+j]);
+            else printf("- ");
+        }
+        puts("");
     }
 }
 
