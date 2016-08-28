@@ -3,7 +3,7 @@
 #define reps(i,a,b,s) for(int i=(int)(a);i<(int)(b);i+=s)
 #define repi(i,a,b) for(int i=(int)(a);i<(int)(b);i++)
 #define rep(i,n) repi(i,0,n)
-#define INF 1e8
+#define INF (100000000)
 
 #include "regular-graph.cpp"
 #include "annealing.cpp"
