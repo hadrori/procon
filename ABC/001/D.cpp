@@ -1,40 +1,40 @@
 #include "bits/stdc++.h"
 using namespace std;
 
-#define repi(i,a,b) for(int i=(int)(a);i<(int)(b);i++)
-#define rep(i,n) repi(i,0,n)
-using i64 = int64_t;
+typedef pair<int,int> Range;
 
-int n;
-pair<int,int> se[30010];
-
-void solve() {
-    vector<pair<int,int>> ps;
-    rep(i,n) {
-        se[i].first = se[i].first/5*5;
-        se[i].second = (se[i].second+4)/5*5;
-        if(se[i].second%100 == 60) se[i].second = se[i].second/100*100+100;
+vector<Range> formatted(vector<Range> ranges) {
+    for(auto &r : ranges) {
+        r.first = r.first/5*5;
+        r.second = (r.second+4)/5*5;
+        if(r.second%100 == 60) r.second = r.second/100*100+100;
     }
-    sort(se,se+n);
-    pair<int,int> s(-1,-1);
-    rep(i,n) {
-        if(se[i].first <= s.second) s.second = max(s.second, se[i].second);
+    sort(begin(ranges),end(ranges));
+    ranges.erase(unique(begin(ranges),end(ranges)), end(ranges));
+    return ranges;
+}
+ 
+vector<Range> merge(vector<Range> ranges) {
+    vector<Range> merged_ranges;
+    Range cur(0,0);
+
+    for(auto &r : ranges) {
+        if(r.first <= cur.second) cur.second = max(cur.second, r.second);
         else {
-            if(s.first >= 0) ps.push_back(s);
-            s = se[i];
+            if(cur.first < cur.second) merged_ranges.push_back(cur);
+            cur = r;
         }
     }
-    ps.push_back(s);
-    for (auto &e: ps) printf("%04d-%04d\n", e.first, e.second);
-}
+    if(cur.first < cur.second) merged_ranges.push_back(cur);
 
-void input() {
-    scanf("%d", &n);
-    rep(i,n) scanf("%d-%d", &se[i].first, &se[i].second);
+    return merged_ranges;
 }
 
 int main() {
-    input();
-    solve();
+    int n; scanf("%d", &n);
+    vector<Range> ranges(n);
+    for(int i = 0; i < n; i++) scanf("%d-%d", &ranges[i].first, &ranges[i].second);
+    ranges = merge(formatted(ranges));
+    for(auto &r : ranges) printf("%04d-%04d\n", r.first, r.second);
     return 0;
 }

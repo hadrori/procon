@@ -1,34 +1,17 @@
 #include "bits/stdc++.h"
 using namespace std;
 
-#define repi(i,a,b) for(int i=(int)(a);i<(int)(b);i++)
-#define rep(i,n) repi(i,0,n)
-using i64 = int64_t;
+const string dirs[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"};
+const int bnds[] = {112, 337, 562, 787, 1012, 1237, 1462, 1687, 1912, 2137, 2362, 2587, 2812, 3037, 3262, 3487, 3600};
+const int nums[] = {14, 92, 200, 326, 476, 644, 830, 1028, 1244, 1466, 1706, 1958, 12000};
 
-ostream &operator<<(ostream &o, const pair<string,int> &p) { o << p.first << ' ' << p.second; return o; }
-
-const string dir[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"};
-const int sep[] = {112, 337, 562, 787, 1012, 1237, 1462, 1687, 1912, 2137, 2362, 2587, 2812, 3037, 3262, 3487, 3600};
-const int pw[] = {14, 92, 200, 326, 476, 644, 830, 1028, 1244, 1466, 1706, 1958, 12000};
-
-int a, b;
-
-string f() { return dir[lower_bound(sep,sep+17,a)-sep]; }
-int g() { return lower_bound(pw, pw+13, b)-pw; }
-
-pair<string,int> solve() {
-    if(!g()) return make_pair("C", 0);
-    return make_pair(f(), g());
-}
-
-void input() {
-    cin >> a >> b;
-}
+int f(int Dis) { return lower_bound(nums, nums+13, Dis) - nums; }
+string g(int W, int Deg) { return W ? dirs[lower_bound(bnds,  bnds+17, Deg) - bnds] : "C"; }
 
 int main() {
-    cin.tie(0);
-    ios::sync_with_stdio(0);
-    input();
-    cout << solve() << endl;
+    int Deg, Dis; scanf("%d %d", &Deg, &Dis);
+    int W = f(Dis);
+    string Dirs = g(W, Deg);
+    printf("%s %d\n", Dirs.c_str(), W);
     return 0;
 }
